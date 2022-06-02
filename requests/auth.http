@@ -1,0 +1,22 @@
+### post register
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "username": "ryan",
+  "email": "ryan@gmail.com",
+  "password": "ryanpassword"
+}
+
+### post login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "ryan@gmail.com",
+  "password": "ryanpassword"
+}
+
+### verified token
+GET http://localhost:3000/verify
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTg0MjliZmE3Zjc2M2NkOTMxZjkyMCIsIm5hbWUiOiJyeWFuIiwiaWF0IjoxNjU0MTQ3MzQ1LCJleHAiOjE2NTQyMzM3NDV9.g2RLO_jYHfGWHDfO5ksftjVS5ESmQL3-TDUaro48zjk
