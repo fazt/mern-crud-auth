@@ -6,7 +6,7 @@ async function main() {
   try {
     await connectDB();
     app.listen(PORT);
-    console.log(`Server is listening on port ${PORT}`);
+    console.log(`Listening on port http://localhost:${PORT}`);
   } catch (error) {
     console.error(error);
   }

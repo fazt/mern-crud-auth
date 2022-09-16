@@ -5,17 +5,14 @@ import { TOKEN_SECRET } from "../config.js";
 
 export const register = async (req, res) => {
   try {
-    // receiving the user data
     const { username, email, password } = req.body;
 
-    // searching if the user already exists
     const userFound = await User.findOne({ email });
 
-    if (userFound) {
+    if (userFound)
       return res.status(400).json({
         message: "User already exists",
       });
-    }
 
     // hashing the password
     const passwordHash = await bcrypt.hash(password, 10);
@@ -28,9 +25,9 @@ export const register = async (req, res) => {
     });
 
     // saving the user in the database
-    await newUser.save();
+    const userSaved = await newUser.save();
 
-    res.json(newUser);
+    res.json(userSaved);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -39,14 +36,12 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const userFound = await User.findOne({ email })
 
-    const userFound = await User.findOne({ email });
-
-    if (!userFound) {
+    if (!userFound)
       return res.status(400).json({
         message: "User not found",
       });
-    }
 
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {

@@ -1,5 +1,5 @@
 ### post register
-POST http://localhost:3000/register
+POST http://localhost:3000/api/register
 Content-Type: application/json
 
 {
@@ -9,14 +9,14 @@ Content-Type: application/json
 }
 
 ### post login
-POST http://localhost:3000/login
+POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-  "email": "ryan@gmail.com",
-  "password": "ryanpassword"
+  "email": "joe@ibm.com",
+  "password": "joe123"
 }
 
 ### verified token
-GET http://localhost:3000/verify
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTg0MjliZmE3Zjc2M2NkOTMxZjkyMCIsIm5hbWUiOiJyeWFuIiwiaWF0IjoxNjU0MTQ3MzQ1LCJleHAiOjE2NTQyMzM3NDV9.g2RLO_jYHfGWHDfO5ksftjVS5ESmQL3-TDUaro48zjk
+GET http://localhost:4000/api/verify
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyY2M5OGE3YWUxZTI0YjRiYWIyMTZiOCIsIm5hbWUiOiJqb2UiLCJpYXQiOjE2NTc1Nzg3NTMsImV4cCI6MTY1NzY2NTE1M30.PqAaB8Mpdn7-wxvtmAieIQoAuq-DXwKmprfm_y-AHDw

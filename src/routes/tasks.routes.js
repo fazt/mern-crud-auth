@@ -6,10 +6,16 @@ import {
   getTasks,
   updateTask,
 } from "../controllers/tasks.controllers.js";
+import { auth } from "../middlewares/auth.middleware.js";
+
 const router = Router();
 
-router.route("/tasks").get(getTasks).post(createTask);
+router.route("/tasks").get(auth, getTasks).post(auth, createTask);
 
-router.route("/tasks/:id").get(getTask).put(updateTask).delete(deleteTask);
+router
+  .route("/tasks/:id")
+  .get(auth, getTask)
+  .put(auth, updateTask)
+  .delete(auth, deleteTask);
 
 export default router;

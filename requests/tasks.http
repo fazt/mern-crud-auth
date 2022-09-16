@@ -1,0 +1,31 @@
+### GET /tasks - Auth required
+GET http://localhost:3000/api/tasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTkxYWIwMDIzYjQ1MmU1M2I4MjgwYSIsIm5hbWUiOiJyeWFuIiwiaWF0IjoxNjU0MjAxMDEwLCJleHAiOjE2NTQyODc0MTB9.mGK22p4cJbwY9_Ebxhao0DKoz6vhfkR81s9HNJCo3qw
+
+### POST /tasks - Auth required
+POST http://localhost:3000/api/tasks
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyY2M5OGE3YWUxZTI0YjRiYWIyMTZiOCIsIm5hbWUiOiJqb2UiLCJpYXQiOjE2NTc1Nzg3NTMsImV4cCI6MTY1NzY2NTE1M30.PqAaB8Mpdn7-wxvtmAieIQoAuq-DXwKmprfm_y-AHDw
+Content-Type: application/json
+
+{
+  "title": "My new task 3",
+  "description": "My new task description 2",
+  "date": "2020-01-01"
+}
+
+### DELETE /tasks - Auth required
+DELETE http://localhost:3000/api/tasks/62991c3d5a4d637cc5af9b68
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTkxYWIwMDIzYjQ1MmU1M2I4MjgwYSIsIm5hbWUiOiJyeWFuIiwiaWF0IjoxNjU0MjAxMDEwLCJleHAiOjE2NTQyODc0MTB9.mGK22p4cJbwY9_Ebxhao0DKoz6vhfkR81s9HNJCo3qw
+
+### GET /tasks/:id - Auth required
+GET http://localhost:3000/api/tasks/62991be3f972489574f99d07
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTkxYWIwMDIzYjQ1MmU1M2I4MjgwYSIsIm5hbWUiOiJyeWFuIiwiaWF0IjoxNjU0MjAxMDEwLCJleHAiOjE2NTQyODc0MTB9.mGK22p4cJbwY9_Ebxhao0DKoz6vhfkR81s9HNJCo3qw
+
+### UPDATE /tasks - Auth required
+PUT http://localhost:3000/api/tasks/62991be3f972489574f99d07
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTkxYWIwMDIzYjQ1MmU1M2I4MjgwYSIsIm5hbWUiOiJyeWFuIiwiaWF0IjoxNjU0MjAxMDEwLCJleHAiOjE2NTQyODc0MTB9.mGK22p4cJbwY9_Ebxhao0DKoz6vhfkR81s9HNJCo3qw
+Content-Type: application/json
+
+{
+  "title": "I have to create a web using MERN Stack"
+}
