@@ -18,15 +18,29 @@ export const AuthProvider = ({ children }) => {
     user: null,
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // clear errors after 5 seconds
+  useEffect(() => {
+    if (errors.length > 0) {
+      const timer = setTimeout(() => {
+        setErrors([]);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
 
   const signup = async (user) => {
     try {
       const response = await registerRequest(user);
       setUser({ ...user, token: response.data.token });
+      console.log(response);
+      localStorage.setItem("token", response.data.token);
       setIsAuthenticated(true);
     } catch (error) {
-      setError(error.response.data.message);
+      console.log(error.response.data);
+      setErrors(error.response.data.message);
     }
   };
 
@@ -34,10 +48,11 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await loginRequest(user);
       setUser({ ...user, token: response.data.token });
-      localStorage.setItem("token", response.data);
+      console.log(response);
+      localStorage.setItem("token", response.data.token);
       setIsAuthenticated(true);
     } catch (error) {
-      setError(error.response.data.message);
+      setErrors(error.response.data.message);
     }
   };
 
@@ -59,12 +74,14 @@ export const AuthProvider = ({ children }) => {
         }
         setIsAuthenticated(true);
       } catch (error) {
-        setError(error.response.data.message);
+        setErrors(error.response.data.message);
         localStorage.removeItem("token");
       }
+      
+      setLoading(false);
     };
     checkLogin();
-  }, []);
+  }, [localStorage.getItem("token")]);
 
   return (
     <AuthContext.Provider
@@ -74,7 +91,8 @@ export const AuthProvider = ({ children }) => {
         signin,
         logout,
         isAuthenticated,
-        error,
+        errors,
+        loading,
       }}
     >
       {children}

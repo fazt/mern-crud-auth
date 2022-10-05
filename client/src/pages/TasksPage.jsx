@@ -1,24 +1,29 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 function Home() {
   const [tasks, setTasks] = useState([]);
   const [token, setToken] = useState(null);
 
   const getTasks = async (token) => {
-    const response = await axios.get("/api/tasks", {
-      headers: {
-        Authorization: token,
-      },
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_APP_API}/api/tasks`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    console.log(response);
     setTasks(response.data);
   };
 
   const deleteTask = async (id) => {
     try {
       if (token) {
-        await axios.delete(`/api/tasks/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_APP_API}/api/tasks/${id}`, {
           headers: {
             Authorization: token,
           },
@@ -40,6 +45,7 @@ function Home() {
 
   return (
     <div>
+      <h1>Tasks</h1>
       {tasks.map((task) => (
         <div key={task._id}>
           <h1>{task.title}</h1>

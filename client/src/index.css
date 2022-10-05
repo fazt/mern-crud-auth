@@ -1,4 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   background: #202020;
   color: white;
+}
+
+.content-container {
+  height: calc(100vh - theme("spacing.20"));
 }

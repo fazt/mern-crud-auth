@@ -1,7 +1,7 @@
 {
-  "name": "mern-tasks-auth",
+  "name": "mern-auth-localstorage",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple MERN Authentication with LocalStorage API",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -18,7 +18,8 @@
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "dotenv": "^16.0.2",

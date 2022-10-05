@@ -26,6 +26,7 @@ function TaskForm() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      console.log(token)
 
       if (!token) {
         navigate("/login");
@@ -46,38 +47,44 @@ function TaskForm() {
             },
           }
         );
-        console.log(response)
+        console.log(response);
       } else {
-        await axios.post("/api/tasks", task, {
+        const res = await axios.post(`${import.meta.env.VITE_APP_API}/api/tasks`, task, {
           headers: {
             Authorization: token,
           },
         });
-
+        console.log(res)
       }
-      
-      navigate("/");
+
+      // navigate("/");
     } catch (error) {
       console.log(error);
-      window.location.href = "/";
+      // window.location.href = "/";
     }
   };
 
   useEffect(() => {
     const getTask = async () => {
       const token = localStorage.getItem("token");
+      console.log(params.id)
       if (params.id) {
-        const response = await axios.get("/api/tasks/" + params.id, {
-          headers: {
-            Authorization: token,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API}/api/tasks/${params.id}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
         console.log(response.data);
         setTask({
           title: response.data.title,
           description: response.data.description,
           completed: response.data.completed,
-          date: response.data.date ? dayjs(response.data.date).utc().format("YYYY-MM-DD") : "",
+          date: response.data.date
+            ? dayjs(response.data.date).utc().format("YYYY-MM-DD")
+            : "",
         });
       }
     };

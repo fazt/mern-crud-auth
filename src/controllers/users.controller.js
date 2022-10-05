@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { TOKEN_SECRET } from "../config.js";
+import { createAccessToken } from "../libs/jwt.js";
 
 export const register = async (req, res) => {
   try {
@@ -11,7 +12,7 @@ export const register = async (req, res) => {
 
     if (userFound)
       return res.status(400).json({
-        message: "User already exists",
+        message: ["The email is already in use"],
       });
 
     // hashing the password
@@ -27,7 +28,15 @@ export const register = async (req, res) => {
     // saving the user in the database
     const userSaved = await newUser.save();
 
-    res.json(userSaved);
+    // create access token
+    const token = createAccessToken({
+      id: userSaved._id,
+      username: userSaved.username,
+    });
+
+    res.json({
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -36,7 +45,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const userFound = await User.findOne({ email })
+    const userFound = await User.findOne({ email });
 
     if (!userFound)
       return res.status(400).json({
@@ -50,10 +59,14 @@ export const login = async (req, res) => {
       });
     }
 
-    const payload = { id: userFound._id, name: userFound.username };
-    const token = jwt.sign(payload, TOKEN_SECRET, { expiresIn: "1d" });
+    const token = createAccessToken({
+      id: userFound._id,
+      username: userFound.username,
+    });
 
-    res.json(token);
+    res.json({
+      token,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
