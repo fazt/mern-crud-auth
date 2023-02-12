@@ -5,9 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev:back": "cross-env NODE_ENV=development nodemon src/index.js --ignore client",
-    "start": "node src/index.js",
-    "dev:front": "npm run dev --prefix client"
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js --ignore client",
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",

@@ -70,7 +70,7 @@ export const login = async (req, res) => {
     });
 
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV !== "development",
       secure: process.env.NODE_ENV !== "development",
     });
 
@@ -82,13 +82,12 @@ export const login = async (req, res) => {
   }
 };
 
-export const verifiedToken = async (req, res) => {
-  const token = req.header("Authorization");
-
+export const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
   if (!token) return res.send(false);
 
   jwt.verify(token, TOKEN_SECRET, async (error, user) => {
-    if (error) return res.send(false);
+    if (error) return res.staus(400).send(false);
 
     const userFound = await User.findById(user.id);
     if (!userFound) return res.send(false);
