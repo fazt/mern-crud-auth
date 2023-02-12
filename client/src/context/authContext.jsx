@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
-import { loginRequest, registerRequest, verifyToken } from "../api/auth";
-import Cookies from "js-cookie";
+import { loginRequest, registerRequest, verifyTokenRequest } from "../api/auth";
+import { useCookies } from "react-cookie";
 
 const AuthContext = createContext();
 
@@ -18,7 +18,8 @@ export const AuthProvider = ({ children }) => {
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [cookies, setCookies, deleteCookie] = useCookies();
 
   // clear errors after 5 seconds
   useEffect(() => {
@@ -46,37 +47,39 @@ export const AuthProvider = ({ children }) => {
       setUser({ ...user, token: response.data.token });
       setIsAuthenticated(true);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setErrors(error.response.data.message);
     }
   };
 
   const logout = () => {
     setUser({ token: null, user: null });
-    Cookies.remove("token");
+    deleteCookie("token");
     setIsAuthenticated(false);
   };
 
   useEffect(() => {
     const checkLogin = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return setIsAuthenticated(false);
-
-      try {
-        const verified = await verifyToken(token);
-        if (!verified.data) {
-          return setIsAuthenticated(false);
-        }
-        setIsAuthenticated(true);
-      } catch (error) {
-        setErrors(error.response.data.message);
-        localStorage.removeItem("token");
+      const { token } = cookies;
+      if (!cookies.token) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        return;
       }
 
-      setLoading(false);
+      try {
+        const verified = await verifyTokenRequest(token);
+        if (!verified.data) return setIsAuthenticated(false);
+        setIsAuthenticated(true);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setErrors(error.response.data.message);
+        setLoading(false);
+      }
     };
     checkLogin();
-  }, [localStorage.getItem("token")]);
+  }, []);
 
   return (
     <AuthContext.Provider

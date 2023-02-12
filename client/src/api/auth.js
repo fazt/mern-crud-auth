@@ -6,7 +6,7 @@ export const registerRequest = async (user) =>
 export const loginRequest = async (user) =>
   await axios.post(`/auth/login`, user);
 
-export const verifyToken = async (token) =>
+export const verifyTokenRequest = async (token) =>
   await axios.get(`/auth/verify`, {
     headers: {
       Authorization: token,

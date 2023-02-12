@@ -1,58 +1,30 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { Button, Input } from "../components/ui";
+import { Button, Card, Input, Label } from "../components/ui";
 import { useTasks } from "../context/tasksContext";
+import { Textarea } from "../components/ui/Textarea";
+import { useForm } from "react-hook-form";
 dayjs.extend(utc);
 
-function TaskForm() {
-  const { createTask } = useTasks();
-  const [task, setTask] = useState({
-    title: "",
-    description: "",
-    completed: false,
-    date: "",
-  });
+export function TaskFormPage() {
+  const { createTask, getTask, updateTask } = useTasks();
   const navigate = useNavigate();
   const params = useParams();
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e) => {
-    setTask({
-      ...task,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data, error) => {
     try {
-      const token = localStorage.getItem("token");
-      console.log(token);
-
-      if (!token) {
-        navigate("/login");
-      }
-
       if (params.id) {
-        const response = await axios.put(
-          `/api/tasks/${params.id}`,
-          {
-            title: task.title,
-            description: task.description,
-            completed: task.completed,
-            date: task.date,
-          },
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        console.log(response);
+        updateTask(params.id, data);
       } else {
-        createTask(task);
+        createTask(data);
       }
 
       navigate("/tasks");
@@ -63,58 +35,49 @@ function TaskForm() {
   };
 
   useEffect(() => {
-    const getTask = async () => {
-      const token = localStorage.getItem("token");
+    const loadTask = async () => {
       if (params.id) {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_API}/api/tasks/${params.id}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
+        const task = await getTask(params.id);
+        setValue("title", task.title);
+        setValue("description", task.description);
+        setValue(
+          "date",
+          task.date ? dayjs(task.date).utc().format("YYYY-MM-DD") : ""
         );
-        console.log(response.data);
-        setTask({
-          title: response.data.title,
-          description: response.data.description,
-          completed: response.data.completed,
-          date: response.data.date
-            ? dayjs(response.data.date).utc().format("YYYY-MM-DD")
-            : "",
-        });
+        setValue("completed", task.completed);
       }
     };
-    getTask();
+    loadTask();
   }, []);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <Card>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Label htmlFor="title">Title</Label>
         <Input
           type="text"
           name="title"
-          value={task.title}
-          onChange={handleChange}
           placeholder="Title"
+          {...register("title")}
+          autoFocus
         />
-        <textarea
+        {errors.title && (
+          <p className="text-red-500 text-xs italic">Please enter a title.</p>
+        )}
+
+        <Label htmlFor="description">Description</Label>
+        <Textarea
           name="description"
           id="description"
           rows="3"
-          value={task.description}
-          onChange={handleChange}
-        ></textarea>
-        <Input
-          type="date"
-          name="date"
-          value={task.date}
-          onChange={handleChange}
-        />
+          placeholder="Description"
+          {...register("description")}
+        ></Textarea>
+
+        <Label htmlFor="date">Date</Label>
+        <Input type="date" name="date" {...register("date")} />
         <Button>Save</Button>
       </form>
-    </div>
+    </Card>
   );
 }
-
-export default TaskForm;
