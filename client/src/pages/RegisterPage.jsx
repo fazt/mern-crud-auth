@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/authContext";
 import { Link, useNavigate } from "react-router-dom";
+import { Card, Message, Button, Input, Label } from "../components/ui";
 
 function Register() {
   const [user, setUser] = useState({
@@ -10,9 +11,6 @@ function Register() {
   });
   const { signup, errors, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
-  const handleChange = (e) =>
-    setUser({ ...user, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,64 +24,22 @@ function Register() {
   }, [isAuthenticated]);
 
   return (
-    <div className="h-full flex items-center justify-center">
-      <div className="bg-zinc-800 p-10 max-w-md rounded-md">
-        {errors.map((error, index) => (
-          <p
-            key={index}
-            className="text-slate-200 bg-red-500 py-1 px-2 text-sm rounded-sm mb-1"
-          >
-            {error}
-          </p>
+    <div className="h-[calc(100vh-100px)] flex items-center justify-center">
+      <Card>
+        {errors.map((error, i) => (
+          <Message message={error} key={i} />
         ))}
         <h1 className="text-3xl font-bold">Register</h1>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email" className="text-xs block my-1 text-slate-300">
-            Email:
-          </label>
-          <input
-            type="email"
-            name="email"
-            placeholder="youremail@domain.tld"
-            value={user.email}
-            onChange={handleChange}
-            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md"
-            autoFocus
-          />
+          <Label htmlFor="username">Username:</Label>
+          <Input type="text" name="username" placeholder="Write your name" />
 
-          <label
-            htmlFor="username"
-            className="text-xs block my-1 text-slate-300"
-          >
-            Username:
-          </label>
-          <input
-            type="name"
-            name="username"
-            placeholder="Write your name"
-            value={user.username}
-            onChange={handleChange}
-            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md"
-          />
+          <Label htmlFor="email">Email:</Label>
+          <Input name="email" placeholder="youremail@domain.tld" autoFocus />
 
-          <label
-            htmlFor="password"
-            className="text-xs block my-1 text-slate-300"
-          >
-            Password:
-          </label>
-          <input
-            type="password"
-            name="password"
-            placeholder="********"
-            value={user.password}
-            onChange={handleChange}
-            className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md"
-          />
-
-          <button className="bg-indigo-500 px-2 py-1 rounded-sm my-2 disabled:bg-indigo-300">
-            Login
-          </button>
+          <Label htmlFor="password">Password:</Label>
+          <Input type="password" name="password" placeholder="********" />
+          <Button>Submit</Button>
         </form>
         <p>
           Already Have an Account?{" "}
@@ -91,7 +47,7 @@ function Register() {
             Login
           </Link>
         </p>
-      </div>
+      </Card>
     </div>
   );
 }

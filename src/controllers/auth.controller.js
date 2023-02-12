@@ -34,6 +34,11 @@ export const register = async (req, res) => {
       username: userSaved.username,
     });
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+    });
+
     res.json({
       token,
     });
@@ -49,19 +54,24 @@ export const login = async (req, res) => {
 
     if (!userFound)
       return res.status(400).json({
-        message: "User not found",
+        message: ["The email does not exist"],
       });
 
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {
       return res.status(400).json({
-        message: "Invalid password",
+        message: ["The password is incorrect"],
       });
     }
 
     const token = createAccessToken({
       id: userFound._id,
       username: userFound.username,
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
     });
 
     res.json({

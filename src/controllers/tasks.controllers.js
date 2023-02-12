@@ -17,7 +17,7 @@ export const createTask = async (req, res) => {
       description,
       date,
       userId: req.user.id,
-      username: req.user.id
+      username: req.user.id,
     });
     await newTask.save();
     res.json(newTask);
@@ -41,13 +41,11 @@ export const deleteTask = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const { title, description, date } = req.body;
-
     const taskUpdated = await Task.findOneAndUpdate(
       { _id: req.params.id },
       { title, description, date },
       { new: true }
     );
-
     return res.json(taskUpdated);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -57,9 +55,7 @@ export const updateTask = async (req, res) => {
 export const getTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
-
     if (!task) return res.status(404).json({ message: "Task not found" });
-
     return res.json(task);
   } catch (error) {
     return res.status(500).json({ message: error.message });

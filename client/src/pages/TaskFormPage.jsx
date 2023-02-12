@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { Button, Input } from "../components/ui";
+import { useTasks } from "../context/tasksContext";
 dayjs.extend(utc);
 
 function TaskForm() {
+  const { createTask } = useTasks();
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -26,7 +29,7 @@ function TaskForm() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      console.log(token)
+      console.log(token);
 
       if (!token) {
         navigate("/login");
@@ -49,15 +52,10 @@ function TaskForm() {
         );
         console.log(response);
       } else {
-        const res = await axios.post(`${import.meta.env.VITE_APP_API}/api/tasks`, task, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        console.log(res)
+        createTask(task);
       }
 
-      // navigate("/");
+      navigate("/tasks");
     } catch (error) {
       console.log(error);
       // window.location.href = "/";
@@ -67,7 +65,6 @@ function TaskForm() {
   useEffect(() => {
     const getTask = async () => {
       const token = localStorage.getItem("token");
-      console.log(params.id)
       if (params.id) {
         const response = await axios.get(
           `${import.meta.env.VITE_APP_API}/api/tasks/${params.id}`,
@@ -94,7 +91,7 @@ function TaskForm() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input
+        <Input
           type="text"
           name="title"
           value={task.title}
@@ -108,13 +105,13 @@ function TaskForm() {
           value={task.description}
           onChange={handleChange}
         ></textarea>
-        <input
+        <Input
           type="date"
           name="date"
           value={task.date}
           onChange={handleChange}
         />
-        <button type="submit">save</button>
+        <Button>Save</Button>
       </form>
     </div>
   );

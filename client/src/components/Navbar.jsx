@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import { ButtonLink } from "./ui/ButtonLink";
 
-function Navbar() {
+export function Navbar() {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
+    <nav className="bg-zinc-700 my-3 flex justify-between py-5 px-10 rounded-lg">
+      <h1 className="text-2xl font-bold">
+        <Link to={isAuthenticated ? "/tasks" : "/"}>Task Manager</Link>
+      </h1>
+      <ul className="flex gap-x-2">
         {isAuthenticated ? (
           <>
             <li>
-              <Link to="/tasks">Tasks</Link>
+              <ButtonLink to="/add-task">Add Task</ButtonLink>
             </li>
             <li>
               <Link to="/" onClick={() => logout()}>
@@ -24,10 +25,10 @@ function Navbar() {
         ) : (
           <>
             <li>
-              <Link to="/login">Login</Link>
+              <ButtonLink to="/login">Login</ButtonLink>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              <ButtonLink to="/register">Register</ButtonLink>
             </li>
           </>
         )}
@@ -35,5 +36,3 @@ function Navbar() {
     </nav>
   );
 }
-
-export default Navbar;
