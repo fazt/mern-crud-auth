@@ -8,7 +8,7 @@ specifiers:
   dotenv: ^16.0.3
   express: ^4.18.2
   jsonwebtoken: ^9.0.0
-  mongoose: ^6.9.1
+  mongoose: ^6.9.2
   morgan: ^1.10.0
   nodemon: ^2.0.20
   zod: ^3.20.6
@@ -19,7 +19,7 @@ dependencies:
   cors: 2.8.5
   express: 4.18.2
   jsonwebtoken: 9.0.0
-  mongoose: 6.9.1
+  mongoose: 6.9.2
   morgan: 1.10.0
   zod: 3.20.6
 
@@ -1424,8 +1424,8 @@ packages:
       - aws-crt
     dev: false
 
-  /mongoose/6.9.1:
-    resolution: {integrity: sha512-hOz1ZWV0w6WEVLrj89Wpk7PXDYtDDF6k7/NX79lY5iKqeFtZsceBXW8xW59YFNcW5O3cH32hQ8IbDlhgyBsDMA==}
+  /mongoose/6.9.2:
+    resolution: {integrity: sha512-Yb9rWJhYm+7Yf839QuKx2dXcclbA0GAMxtdDiaedHsOQU+y28cD/8gKYp1wTwwyAjKesqaGfLG4ez7D9lKpwBw==}
     engines: {node: '>=12.0.0'}
     dependencies:
       bson: 4.7.2

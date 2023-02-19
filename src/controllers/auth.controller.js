@@ -83,6 +83,7 @@ export const login = async (req, res) => {
 };
 
 export const verifyToken = async (req, res) => {
+  console.log(req.cookies)
   const { token } = req.cookies;
   if (!token) return res.send(false);
 
@@ -94,4 +95,13 @@ export const verifyToken = async (req, res) => {
 
     return res.send(true);
   });
+};
+
+export const logout = async (req, res) => {
+  res.cookie("token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== "development",
+    expires: new Date(0),
+  });
+  return res.sendStatus(200);
 };

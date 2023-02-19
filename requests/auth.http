@@ -1,22 +1,26 @@
+@api = http://localhost:4000/api/auth
+
 ### post register
-POST http://localhost:3000/api/register
+POST {{api}}/register
 Content-Type: application/json
 
 {
-  "username": "ryan",
-  "email": "ryan@gmail.com",
-  "password": "ryanpassword"
+  "username": "ryan2",
+  "email": "ryan2@gmail.com",
+  "password": "ryanpsasword"
 }
 
 ### post login
-POST http://localhost:3000/api/login
+POST {{api}}/login
 Content-Type: application/json
 
 {
-  "email": "joe@ibm.com",
-  "password": "joe123"
+  "email": "ryan2@gmail.com",
+  "password": "ryanpsasword"
 }
 
 ### verified token
-GET http://localhost:4000/api/verify
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyY2M5OGE3YWUxZTI0YjRiYWIyMTZiOCIsIm5hbWUiOiJqb2UiLCJpYXQiOjE2NTc1Nzg3NTMsImV4cCI6MTY1NzY2NTE1M30.PqAaB8Mpdn7-wxvtmAieIQoAuq-DXwKmprfm_y-AHDw
+GET {{api}}/verify
+
+### Logout
+POST {{api}}/logout

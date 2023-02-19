@@ -17,7 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.9.1",
+    "mongoose": "^6.9.2",
     "morgan": "^1.10.0",
     "zod": "^3.20.6"
   },

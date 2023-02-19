@@ -14,14 +14,10 @@ const taskSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    userId: {
-      type: String,
-      required: true,
-    },
-    username: {
+    user: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-    }
+    },
   },
   {
     timestamps: true,
