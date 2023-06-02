@@ -25,8 +25,6 @@ function Register() {
     if (isAuthenticated) navigate("/tasks");
   }, [isAuthenticated]);
 
-  console.log(errors)
-
   return (
     <div className="h-[calc(100vh-100px)] flex items-center justify-center">
       <Card>
@@ -41,6 +39,7 @@ function Register() {
             name="username"
             placeholder="Write your name"
             {...register("username")}
+            autoFocus
           />
           {errors.username?.message && (
             <p className="text-red-500">{errors.username?.message}</p>
@@ -50,7 +49,6 @@ function Register() {
           <Input
             name="email"
             placeholder="youremail@domain.tld"
-            autoFocus
             {...register("email")}
           />
           {errors.email?.message && (

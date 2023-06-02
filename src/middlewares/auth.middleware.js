@@ -14,7 +14,6 @@ export const auth = (req, res, next) => {
       if (error) {
         return res.status(401).json({ message: "Token is not valid" });
       }
-      console.log(user);
       req.user = user;
       next();
     });

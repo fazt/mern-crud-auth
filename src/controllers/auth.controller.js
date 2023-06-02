@@ -29,18 +29,20 @@ export const register = async (req, res) => {
     const userSaved = await newUser.save();
 
     // create access token
-    const token = createAccessToken({
+    const token = await createAccessToken({
       id: userSaved._id,
-      username: userSaved.username,
     });
 
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      httpOnly: process.env.NODE_ENV !== "development",
+      secure: true,
+      sameSite: "none",
     });
 
     res.json({
-      token,
+      id: userSaved._id,
+      username: userSaved.username,
+      email: userSaved.email,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -64,18 +66,21 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = createAccessToken({
+    const token = await createAccessToken({
       id: userFound._id,
       username: userFound.username,
     });
 
     res.cookie("token", token, {
       httpOnly: process.env.NODE_ENV !== "development",
-      secure: process.env.NODE_ENV !== "development",
+      secure: true,
+      sameSite: "none",
     });
 
     res.json({
-      token,
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -83,24 +88,27 @@ export const login = async (req, res) => {
 };
 
 export const verifyToken = async (req, res) => {
-  console.log(req.cookies)
   const { token } = req.cookies;
   if (!token) return res.send(false);
 
   jwt.verify(token, TOKEN_SECRET, async (error, user) => {
-    if (error) return res.staus(400).send(false);
+    if (error) return res.sendStatus(401);
 
     const userFound = await User.findById(user.id);
-    if (!userFound) return res.send(false);
+    if (!userFound) return res.sendStatus(401);
 
-    return res.send(true);
+    return res.json({
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
+    });
   });
 };
 
 export const logout = async (req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
+    secure: true,
     expires: new Date(0),
   });
   return res.sendStatus(200);

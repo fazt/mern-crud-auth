@@ -9,10 +9,14 @@ docker-compose up -d
 npm run dev
 ```
 
-### Installation
+### Deployment
 
 ```sh
 git clone https://github.com/FaztWeb/mern-tasks-auth
 cd mern-tasks-auth
 npm i
+npm run build
+npm start
 ```
+
+> You need to have a Mongodb database running

@@ -19,15 +19,21 @@ export function TaskFormPage() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data, error) => {
+  const onSubmit = async (data) => {
     try {
       if (params.id) {
-        updateTask(params.id, data);
+        updateTask(params.id, {
+          ...data,
+          date: dayjs.utc(data.date).format(),
+        });
       } else {
-        createTask(data);
+        createTask({
+          ...data,
+          date: dayjs.utc(data.date).format(),
+        });
       }
 
-      navigate("/tasks");
+      // navigate("/tasks");
     } catch (error) {
       console.log(error);
       // window.location.href = "/";
